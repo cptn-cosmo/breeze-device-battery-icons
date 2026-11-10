@@ -2,7 +2,7 @@
 pkgname=breeze-device-battery-icons
 pkgver=1.0.0
 pkgrel=1
-pkgdesc="Breeze battery-level icons for wireless mice and keyboards"
+pkgdesc="Breeze battery-level icons for wireless mice, keyboards and headsets"
 arch=('any')
 url="https://github.com/cptn-cosmo/breeze-device-battery-icons"
 license=('LGPL-3.0-or-later')

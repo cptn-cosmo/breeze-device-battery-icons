@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+    <defs>
+        <style id="current-color-scheme" type="text/css">.ColorScheme-Text {
+            color:#232629;
+        }</style>
+        <mask id="badge-cut" maskUnits="userSpaceOnUse" x="0" y="0" width="32" height="32">
+            <path fill="#fff" d="M0 0H32V17H19V32H0z"/>
+        </mask>
+    </defs>
+    <g mask="url(#badge-cut)">
+        <g transform="translate(0,-4)">
+            <path class="ColorScheme-Text" d="m3 10v12h25v-3c0.554 0 1-0.446 1-1v-4c0-0.554-0.446-1-1-1v-3h-25zm1 1h23v10h-23v-10zm1 1v8h18l-2-8h-16z" style="fill:currentColor;fill-opacity:1;stroke:none"/>
+        </g>
+    </g>
+    <path class="ColorScheme-Text" fill="currentColor" fill-rule="nonzero" d="M20 24A6 6 0 0 1 32 24h-1A5 5 0 0 0 21 24zM20 24h1v8h-1zM31 24h1v8h-1zM20 26h3v6h-3zM29 26h3v6h-3zM23 31h3v1h-3z"/>
+</svg>

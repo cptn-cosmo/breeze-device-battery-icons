@@ -1,12 +1,13 @@
 # breeze-device-battery-icons
 
-Battery-level icons for wireless mice and keyboards, built from KDE's
+Battery-level icons for wireless mice, keyboards and headsets, built from KDE's
 [Breeze](https://invent.kde.org/frameworks/breeze-icons) battery icons with a
-small mouse or keyboard glyph in the bottom-right corner.
+small mouse, keyboard or headset glyph in the bottom-right corner.
 
 ```
 input-mouse-battery-{000..100}[-charging].svg
 input-keyboard-battery-{000..100}[-charging].svg
+audio-headset-battery-{000..100}[-charging].svg
 ```
 
 The icons come in steps of 10, in 16, 22, 24 and 32 px, for both `breeze` and `breeze-dark`.
@@ -34,7 +35,7 @@ cp -r icons/breeze icons/breeze-dark /usr/share/icons/
 python3 generate.py [/usr/share/icons] [./icons]
 ```
 
-You need Qt ≥ 6.7 (QtSvg `clip-path` support) for the cut-out around the badge.
+You need Qt ≥ 6.7 for the cut-out around the badge, because it uses an SVG `<mask>` (QtSvg ignores `clip-path`).
 
 ## License
 

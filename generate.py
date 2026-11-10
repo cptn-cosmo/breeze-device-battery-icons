@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate input-{mouse,keyboard}-battery-NNN[-charging].svg icons.
+"""Generate {input-mouse,input-keyboard,audio-headset}-battery-NNN[-charging].svg icons.
 
 Takes Breeze's status/<size>/battery-NNN[-charging].svg, shifts the battery up,
 cuts out the bottom-right corner and puts a small pixel-aligned mouse or
@@ -16,13 +16,8 @@ ICONS = Path(sys.argv[1] if len(sys.argv) > 1 else "/usr/share/icons")
 OUT = Path(sys.argv[2] if len(sys.argv) > 2 else Path(__file__).parent / "icons")
 THEMES = {"breeze": "#232629", "breeze-dark": "#fcfcfc"}  # ColorScheme-Text
 
-# size: (battery dy, mouse (w, h), keyboard (w, h))
-SIZES = {
-    16: (-2, (5, 7), (9, 6)),
-    22: (-2, (7, 10), (13, 9)),
-    24: (-2, (7, 10), (13, 9)),
-    32: (-4, (9, 14), (17, 11)),
-}
+# size: how far the battery is moved up to make room for the badge
+BATTERY_DY = {16: -2, 22: -2, 24: -2, 32: -4}
 LEVELS = [f"{n:03d}" for n in range(0, 101, 10)]
 
 
@@ -60,13 +55,30 @@ def keyboard(x, y, w, h):
     return d
 
 
-GLYPHS = {"mouse": (mouse, 1), "keyboard": (keyboard, 2)}
+def headset(x, y, w, h):
+    """Headband + ear cups + mic boom. Use an even width so the arc is pixel-centred."""
+    r = w // 2
+    cw = 3 if w >= 12 else 2  # ear cup width
+    cup = max(3, round(h * 0.4))
+    d = f"M{x} {y + r}A{r} {r} 0 0 1 {x + w} {y + r}h-1A{r - 1} {r - 1} 0 0 0 {x + 1} {y + r}z"
+    d += rect(x, y + r, 1, h - r) + rect(x + w - 1, y + r, 1, h - r)
+    d += rect(x, y + h - cup, cw, cup) + rect(x + w - cw, y + h - cup, cw, cup)
+    d += rect(x + cw, y + h - 1, max(1, w // 2 - cw), 1)  # microphone boom
+    return d
+
+
+# icon name prefix: (glyph, fill-rule, {size: (w, h)})
+GLYPHS = {
+    "input-mouse": (mouse, "evenodd", {16: (5, 7), 22: (7, 10), 24: (7, 10), 32: (9, 14)}),
+    "input-keyboard": (keyboard, "evenodd", {16: (9, 6), 22: (13, 9), 24: (13, 9), 32: (17, 11)}),
+    "audio-headset": (headset, "nonzero", {16: (6, 7), 22: (8, 10), 24: (8, 10), 32: (12, 14)}),
+}
 
 
 def compose(src: str, size: int, kind: str, text_color: str) -> str:
-    dy, *dims = SIZES[size]
-    fn, idx = GLYPHS[kind]
-    w, h = dims[idx - 1]
+    dy = BATTERY_DY[size]
+    fn, fill_rule, dims = GLYPHS[kind]
+    w, h = dims[size]
     bx, by = size - w, size - h
     cx, cy = bx - 1, by - 1  # 1px gap around the badge
 
@@ -81,16 +93,16 @@ def compose(src: str, size: int, kind: str, text_color: str) -> str:
     return f"""<svg xmlns="http://www.w3.org/2000/svg" width="{size}" height="{size}" viewBox="0 0 {size} {size}">
     <defs>
         {style}
-        <clipPath id="badge-cut">
-            <path d="M0 0H{size}V{cy}H{cx}V{size}H0z"/>
-        </clipPath>
+        <mask id="badge-cut" maskUnits="userSpaceOnUse" x="0" y="0" width="{size}" height="{size}">
+            <path fill="#fff" d="M0 0H{size}V{cy}H{cx}V{size}H0z"/>
+        </mask>
     </defs>
-    <g clip-path="url(#badge-cut)">
+    <g mask="url(#badge-cut)">
         <g transform="translate(0,{dy})">
             {body}
         </g>
     </g>
-    <path class="ColorScheme-Text" fill="currentColor" fill-rule="evenodd" d="{fn(bx, by, w, h)}"/>
+    <path class="ColorScheme-Text" fill="currentColor" fill-rule="{fill_rule}" d="{fn(bx, by, w, h)}"/>
 </svg>
 """
 
@@ -98,14 +110,14 @@ def compose(src: str, size: int, kind: str, text_color: str) -> str:
 def main():
     count = 0
     for theme, text_color in THEMES.items():
-        for size in SIZES:
+        for size in BATTERY_DY:
             outdir = OUT / theme / "status" / str(size)
             outdir.mkdir(parents=True, exist_ok=True)
             for level in LEVELS:
                 for suffix in ("", "-charging"):
                     src = (ICONS / theme / "status" / str(size) / f"battery-{level}{suffix}.svg").read_text()
                     for kind in GLYPHS:
-                        name = f"input-{kind}-battery-{level}{suffix}.svg"
+                        name = f"{kind}-battery-{level}{suffix}.svg"
                         (outdir / name).write_text(compose(src, size, kind, text_color))
                         count += 1
     print(f"wrote {count} icons to {OUT}")

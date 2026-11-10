@@ -1,11 +1,11 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
     <defs>
         <style type="text/css" id="current-color-scheme">.ColorScheme-PositiveText { color: #27ae60; } .ColorScheme-Text { color: #fcfcfc; } </style>
-        <clipPath id="badge-cut">
-            <path d="M0 0H32V17H22V32H0z"/>
-        </clipPath>
+        <mask id="badge-cut" maskUnits="userSpaceOnUse" x="0" y="0" width="32" height="32">
+            <path fill="#fff" d="M0 0H32V17H22V32H0z"/>
+        </mask>
     </defs>
-    <g clip-path="url(#badge-cut)">
+    <g mask="url(#badge-cut)">
         <g transform="translate(0,-4)">
             <g class="ColorScheme-Text" fill="currentColor">
         <path d="M3 10v12h25v-3c.554 0 1-.446 1-1v-4c0-.554-.446-1-1-1v-3zm1 1h23v10H4z"/>

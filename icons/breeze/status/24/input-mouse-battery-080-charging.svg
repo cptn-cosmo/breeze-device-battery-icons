@@ -8,11 +8,11 @@
                 color:#27ae60;
             }
         </style>
-        <clipPath id="badge-cut">
-            <path d="M0 0H24V13H16V24H0z"/>
-        </clipPath>
+        <mask id="badge-cut" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24">
+            <path fill="#fff" d="M0 0H24V13H16V24H0z"/>
+        </mask>
     </defs>
-    <g clip-path="url(#badge-cut)">
+    <g mask="url(#badge-cut)">
         <g transform="translate(0,-2)">
             <g transform="translate(1,1)">
     <path style="fill:currentColor;fill-opacity:1;stroke:none" class="ColorScheme-Text" d="M3 7v8h12V7zM1 5v12h19v-4h.5c.277 0 .5-.223.5-.5v-3c0-.277-.223-.5-.5-.5H20V5H4zm1 1h17v10H2z" fill-rule="evenodd"/>
