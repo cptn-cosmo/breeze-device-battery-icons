@@ -1,6 +1,6 @@
 # Maintainer: cptn-cosmo
 pkgname=breeze-device-battery-icons
-pkgver=1.0.0
+pkgver=1.1.0
 pkgrel=1
 pkgdesc="Breeze battery-level icons for wireless mice, keyboards and headsets"
 arch=('any')
@@ -8,7 +8,7 @@ url="https://github.com/cptn-cosmo/breeze-device-battery-icons"
 license=('LGPL-3.0-or-later')
 depends=('breeze-icons')
 source=("$pkgname-$pkgver.tar.gz::$url/archive/refs/tags/v$pkgver.tar.gz")
-sha256sums=('1c0fdff478fef54fb9508aceac6155e7aeb6f14e33190e021d407d7a67c85a13')
+sha256sums=('c70bed85841d3bc1cbf1a64f3a71cdb9a8fcd13acb5451fe46a6b16cb4af46ae')
 
 package() {
   cd "$pkgname-$pkgver"
